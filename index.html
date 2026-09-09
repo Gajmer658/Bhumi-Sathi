@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bhumi Sathi — Buy & Sell Land in Assam</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F3EEDF;
+    --paper-2:#EAE3CD;
+    --ink:#21281F;
+    --ink-soft:#4C5347;
+    --soil:#A6432E;
+    --soil-dark:#8A3524;
+    --gold:#C4922E;
+    --leaf:#3E5C43;
+    --leaf-soft:#E4E9DF;
+    --line:#D9CFB4;
+    --white:#FFFDF7;
+    --danger:#A6432E;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.serif{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1.12;
+    margin:0;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;}
+  input,select,textarea{font-family:inherit;font-size:16px;}
+  ::selection{background:var(--gold);color:var(--white);}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px;}
+
+  /* NAV */
+  .nav{
+    border-bottom:1px solid var(--line);
+    position:sticky;top:0;background:var(--paper);z-index:50;
+  }
+  .nav-inner{
+    max-width:1080px;margin:0 auto;padding:18px 28px;
+    display:flex;align-items:center;justify-content:space-between;gap:20px;
+  }
+  .brand{display:flex;align-items:baseline;gap:8px;}
+  .brand-mark{font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;letter-spacing:-0.01em;}
+  .brand-tag{font-size:0.72rem;color:var(--ink-soft);font-style:italic;font-family:'Fraunces',serif;}
+  .nav-links{display:flex;gap:28px;align-items:center;}
+  .nav-link{font-size:0.92rem;font-weight:500;color:var(--ink-soft);padding:6px 0;border-bottom:2px solid transparent;}
+  .nav-link:hover{color:var(--ink);}
+  .nav-link.active{color:var(--ink);border-bottom-color:var(--soil);}
+  .nav-cta{
+    background:var(--soil);color:var(--white);padding:10px 18px;border-radius:3px;
+    font-size:0.88rem;font-weight:600;
+  }
+  .nav-cta:hover{background:var(--soil-dark);}
+  .nav-toggle{display:none;font-size:1.6rem;background:none;border:none;color:var(--ink);}
+
+  @media(max-width:760px){
+    .nav-links{
+      position:fixed;top:64px;left:0;right:0;background:var(--paper);
+      flex-direction:column;align-items:flex-start;padding:20px 28px;
+      border-bottom:1px solid var(--line);gap:16px;
+      display:none;
+    }
+    .nav-links.open{display:flex;}
+    .nav-toggle{display:block;}
+    .nav-cta{order:99;}
+  }
+
+  /* HERO */
+  .hero{padding:64px 0 48px;}
+  .hero-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:end;}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);max-width:11ch;}
+  .hero p.lede{margin-top:18px;font-size:1.1rem;color:var(--ink-soft);max-width:42ch;}
+  .river{width:100%;height:auto;margin:28px 0 0;display:block;}
+
+  .search-card{
+    background:var(--white);border:1px solid var(--line);border-radius:4px;
+    padding:22px;align-self:start;
+  }
+  .search-card h3{font-size:1rem;margin-bottom:14px;font-family:'Work Sans';font-weight:700;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:0.78rem;color:var(--ink-soft);margin-bottom:5px;font-weight:600;}
+  .field select, .field input{
+    width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:3px;
+    background:var(--paper);color:var(--ink);
+  }
+  .btn{
+    display:inline-block;padding:12px 22px;border-radius:3px;font-weight:600;font-size:0.94rem;
+    transition:background .15s;
+  }
+  .btn-primary{background:var(--soil);color:var(--white);}
+  .btn-primary:hover{background:var(--soil-dark);}
+  .btn-secondary{background:var(--leaf-soft);color:var(--leaf);}
+  .btn-secondary:hover{background:#d9e2d3;}
+  .btn-ghost{border:1px solid var(--line);color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--ink);}
+  .btn-block{width:100%;text-align:center;}
+  .btn-sm{padding:8px 14px;font-size:0.82rem;}
+
+  @media(max-width:760px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+
+  @media(max-width:760px){
+    .hero-grid{grid-template-columns:1fr;}
+  }
+
+  /* SECTION HEADERS */
+  .section{padding:56px 0;border-top:1px solid var(--line);}
+  .section-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:28px;gap:20px;flex-wrap:wrap;}
+  .section-head h2{font-size:1.7rem;}
+  .section-head .see-all{font-size:0.88rem;font-weight:600;color:var(--soil);border-bottom:1px solid var(--soil);padding-bottom:1px;}
+
+  /* LISTING ROWS (broadsheet style) */
+  .listing-list{border-top:1px solid var(--line);}
+  .listing-row{
+    display:grid;grid-template-columns:96px 1fr auto;gap:20px;align-items:center;
+    padding:20px 0;border-bottom:1px solid var(--line);
+  }
+  .listing-row:hover .listing-title{color:var(--soil);}
+  .plot-icon{
+    width:96px;height:72px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem;flex-shrink:0;
+  }
+  .listing-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;margin-bottom:4px;}
+  .listing-meta{font-size:0.85rem;color:var(--ink-soft);}
+  .listing-meta span:not(:last-child)::after{content:"·";margin:0 8px;color:var(--line);}
+  .listing-tag{
+    display:inline-block;font-size:0.7rem;font-weight:700;padding:3px 8px;border-radius:2px;margin-top:8px;
+  }
+  .tag-agri{background:var(--leaf-soft);color:var(--leaf);}
+  .tag-resi{background:#f0e3d2;color:var(--gold);}
+  .tag-comm{background:#f2ded9;color:var(--soil);}
+  .tag-indu{background:#e6e2f0;color:#5a4e8a;}
+  .listing-price{text-align:right;white-space:nowrap;}
+  .price-amt{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;color:var(--gold);}
+  .price-sub{font-size:0.78rem;color:var(--ink-soft);}
+
+  @media(max-width:600px){
+    .listing-row{grid-template-columns:64px 1fr;}
+    .listing-price{grid-column:1/-1;text-align:left;padding-left:84px;margin-top:-8px;}
+  }
+
+  .empty-state{
+    padding:48px 24px;text-align:center;color:var(--ink-soft);border:1px dashed var(--line);border-radius:4px;
+  }
+  .empty-state .serif{font-size:1.2rem;color:var(--ink);margin-bottom:8px;display:block;}
+
+  /* HOW IT WORKS */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;}
+  .step-num{font-family:'Fraunces',serif;font-size:0.85rem;color:var(--soil);font-weight:700;margin-bottom:10px;}
+  .step h3{font-size:1.15rem;margin-bottom:8px;}
+  .step p{color:var(--ink-soft);font-size:0.94rem;}
+  @media(max-width:760px){.steps{grid-template-columns:1fr;}}
+
+  .commission-strip{
+    background:var(--ink);color:var(--paper);border-radius:4px;padding:28px 32px;
+    display:grid;grid-template-columns:1fr auto auto;gap:24px;align-items:center;margin-top:36px;
+  }
+  .commission-strip .label{font-size:0.78rem;text-transform:none;color:#c9c4ae;margin-bottom:4px;}
+  .commission-strip .value{font-family:'Fraunces',serif;font-size:1.6rem;font-weight:600;}
+  @media(max-width:700px){.commission-strip{grid-template-columns:1fr;text-align:left;}}
+
+  /* FILTER BAR (browse) */
+  .filter-bar{
+    display:flex;gap:14px;flex-wrap:wrap;padding:20px 0;border-bottom:1px solid var(--line);margin-bottom:8px;
+  }
+  .filter-bar select, .filter-bar input{
+    padding:9px 12px;border:1px solid var(--line);border-radius:3px;background:var(--white);
+  }
+  .results-count{font-size:0.85rem;color:var(--ink-soft);margin:14px 0;}
+
+  /* LISTING DETAIL */
+  .detail-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:44px;align-items:start;}
+  .detail-hero{
+    height:280px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:4rem;margin-bottom:24px;
+  }
+  .detail-title{font-size:2rem;margin-bottom:6px;}
+  .detail-loc{color:var(--ink-soft);font-size:1rem;margin-bottom:20px;}
+  .spec-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0;padding:20px;background:var(--white);border:1px solid var(--line);border-radius:4px;}
+  .spec-label{font-size:0.72rem;color:var(--ink-soft);font-weight:600;margin-bottom:3px;}
+  .spec-val{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;}
+  .desc-block{margin:24px 0;color:var(--ink-soft);line-height:1.7;}
+
+  .contact-card{
+    background:var(--white);border:1px solid var(--line);border-radius:4px;padding:24px;position:sticky;top:90px;
+  }
+  .contact-card .price-amt{font-size:1.6rem;}
+  .contact-card .price-sub{margin-bottom:20px;}
+  .fee-note{font-size:0.78rem;color:var(--ink-soft);margin-top:14px;border-top:1px solid var(--line);padding-top:14px;}
+
+  @media(max-width:760px){.detail-grid{grid-template-columns:1fr;}.contact-card{position:static;}}
+
+  /* FORMS */
+  .form-shell{max-width:640px;}
+  .form-row{margin-bottom:18px;}
+  .form-row label{display:block;font-size:0.85rem;font-weight:600;margin-bottom:6px;}
+  .form-row .hint{font-size:0.78rem;color:var(--ink-soft);font-weight:400;margin-top:4px;}
+  .form-row input, .form-row select, .form-row textarea{
+    width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:3px;background:var(--white);color:var(--ink);
+  }
+  .form-row textarea{min-height:100px;resize:vertical;}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.two-col{grid-template-columns:1fr;}}
+  .form-note{
+    background:var(--leaf-soft);color:var(--leaf);padding:14px 16px;border-radius:4px;font-size:0.88rem;margin-bottom:24px;
+  }
+  .success-box{
+    background:var(--white);border:1px solid var(--leaf);border-radius:4px;padding:28px;text-align:left;
+  }
+  .success-box .serif{font-size:1.3rem;display:block;margin-bottom:8px;}
+
+  /* ADMIN */
+  .admin-gate{max-width:380px;margin:80px auto;text-align:center;}
+  .admin-tabs{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:28px;flex-wrap:wrap;}
+  .admin-tab{padding:12px 18px;font-size:0.88rem;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;}
+  .admin-tab.active{color:var(--ink);border-bottom-color:var(--soil);}
+  .stat-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+  .stat-box{background:var(--white);border:1px solid var(--line);border-radius:4px;padding:18px;}
+  .stat-box .num{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:600;}
+  .stat-box .lbl{font-size:0.76rem;color:var(--ink-soft);margin-top:2px;}
+  @media(max-width:700px){.stat-row{grid-template-columns:1fr 1fr;}}
+
+  table{width:100%;border-collapse:collapse;font-size:0.9rem;}
+  th{text-align:left;padding:10px 12px;border-bottom:1px solid var(--ink);font-size:0.76rem;color:var(--ink-soft);text-transform:none;font-weight:600;}
+  td{padding:12px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .status-pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:0.72rem;font-weight:700;}
+  .status-pending{background:#f0e3d2;color:var(--gold);}
+  .status-approved{background:var(--leaf-soft);color:var(--leaf);}
+  .status-rejected{background:#f2ded9;color:var(--soil);}
+  .status-closed{background:var(--ink);color:var(--paper);}
+  .row-actions{display:flex;gap:8px;flex-wrap:wrap;}
+  .table-scroll{overflow-x:auto;}
+
+  .close-deal-form{background:var(--paper-2);border-radius:4px;padding:16px;margin-top:8px;display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end;}
+  .close-deal-form .field{margin:0;min-width:140px;flex:1;}
+
+  footer{border-top:1px solid var(--line);padding:40px 0;margin-top:40px;}
+  .footer-grid{display:flex;justify-content:space-between;flex-wrap:wrap;gap:20px;}
+  .footer-note{font-size:0.82rem;color:var(--ink-soft);max-width:46ch;}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:4px;font-size:0.9rem;
+    box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+
+  .page-title-block{padding:44px 0 8px;}
+  .page-title-block h1{font-size:2.2rem;}
+  .page-title-block p{color:var(--ink-soft);margin-top:10px;max-width:56ch;}
+
+  .wa-float{
+    position:fixed;bottom:24px;right:24px;background:#25D366;color:white;
+    width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);z-index:150;font-size:1.6rem;text-decoration:none;
+  }
+  .wa-float:hover{background:#1ebe5a;}
+  @media(max-width:600px){.wa-float{bottom:18px;right:18px;width:50px;height:50px;}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#/home" class="brand">
+      <span class="brand-mark">Bhumi Sathi</span>
+      <span class="brand-tag" id="navBrandTag">land, honestly brokered</span>
+      <span id="udyamBadgeNav" style="font-size:0.68rem;font-weight:700;color:var(--leaf);background:var(--leaf-soft);padding:2px 8px;border-radius:20px;margin-left:6px;"></span>
+    </a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#/browse" class="nav-link" data-route="browse" id="navBrowse">Browse Land</a>
+      <a href="#/sell" class="nav-link" data-route="sell" id="navSell">Sell Your Land</a>
+      <a href="#/how-it-works" class="nav-link" data-route="how-it-works" id="navHow">How It Works</a>
+      <a href="#/admin" class="nav-link" data-route="admin" id="navAdmin">Admin</a>
+      <button class="btn-ghost btn-sm" style="border-radius:20px;font-weight:700;" onclick="toggleLang()" id="langToggleBtn">অসমীয়া</button>
+      <a href="#/sell" class="nav-cta" id="navCta">List Land</a>
+    </div>
+  </div>
+</nav>
+
+<main id="app"></main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <span class="brand-mark" style="font-size:1.1rem;">Bhumi Sathi</span>
+      <div style="display:inline-flex;align-items:center;gap:6px;background:var(--leaf-soft);color:var(--leaf);font-size:0.72rem;font-weight:700;padding:3px 10px;border-radius:20px;margin-left:10px;vertical-align:middle;">✓ MSME Registered · <span id="udyamBadgeFooter"></span></div>
+      <p class="footer-note" id="footerDesc">A brokered marketplace for buying and selling land across Assam. Every deal is reviewed and closed by a broker — no fake listings, no vanishing sellers.</p>
+    </div>
+    <div class="footer-note">
+      <span id="footerFee">Broker fee: 1.5% from buyer, 2.5% from seller — charged only when a deal closes. A small one-time verification fee applies at listing.</span><br>
+      <span id="footerServing">Serving Kamrup, Nagaon, Jorhat, Dibrugarh, Sonitpur &amp; more.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" id="waFloat" class="wa-float" target="_blank" rel="noopener" title="Chat on WhatsApp">💬</a>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------------- CONFIG ---------------- */
+/* IMPORTANT: replace this with your real WhatsApp Business number, country code + number, no + or spaces. e.g. "919362612698" */
+const WHATSAPP_NUMBER = "917002429458";
+
+/* Commission on a closed deal — kept closer to market norms so the platform stays competitive */
+const BUYER_FEE_PCT = 0.015;   // 1.5%
+const SELLER_FEE_PCT = 0.025;  // 2.5%
+const TOTAL_FEE_PCT = BUYER_FEE_PCT + SELLER_FEE_PCT; // 4%
+
+/* One-time, non-refundable fee charged to the seller at listing submission — covers the broker's site-visit
+   and document verification cost regardless of whether the land eventually sells. */
+const VERIFICATION_FEE = 1000;
+
+/* MSME / Udyam registration number, shown as a trust badge — number only, no personal contact details published */
+const UDYAM_NUMBER = "UDYAM-AS-08-0026466";
+
+/* ---------------- LANGUAGE ---------------- */
+let LANG = 'en';
+const T = {
+  en: {
+    brandTag: "land, honestly brokered",
+    navBrowse: "Browse Land", navSell: "Sell Your Land", navHow: "How It Works", navAdmin: "Admin", navCta: "List Land",
+    heroTitle: "Buy and sell land in Assam, without the guesswork.",
+    heroLede: "Every listing here is checked by a broker before it goes live, and every deal is closed with a broker in the middle — so buyers know the land is real, and sellers know the buyer is serious.",
+    browseBtn: "Browse Land", listBtn: "List Your Land",
+    recentApproved: "Recently approved", seeAll: "See all listings →",
+    howClosesTitle: "How a deal actually closes",
+    step1t: "Seller lists, broker verifies", step1d: "A seller submits their land details. Nothing goes live until it's reviewed and approved.",
+    step2t: "Buyer enquires", step2d: "A buyer finds land they like and sends an enquiry. The broker connects both sides directly.",
+    step3t: "Broker closes the deal", step3d: "The broker handles the negotiation and paperwork, and charges a fee only once the deal is done.",
+    feeLabel: "Broker fee — charged only on a closed deal",
+    fullDetails: "Full details", listYourLand: "List your land",
+    hiwTitle: "How Bhumi Sathi works",
+    hiwSub: "A simple idea: land deals in Assam often fall apart from mistrust, disappearing sellers, or unclear paperwork. Putting a broker in the middle of every deal fixes that.",
+    forSellers: "For Sellers", forSellersT: "List for free, get verified", forSellersD: "Submit your land details. A broker checks the basics before it goes live, so serious buyers take listings here seriously.",
+    forBuyers: "For Buyers", forBuyersT: "Browse with confidence", forBuyersD: "Every plot you see has already passed a review. Send an enquiry and the broker connects you directly with the seller.",
+    forEveryone: "For Everyone", forEveryoneT: "Broker closes the loop", forEveryoneD: "The broker helps negotiate, verifies documents, and sees the deal through to registration.",
+    feeLabel2: "Broker fee, charged only on a successfully closed deal",
+    feeValue: "1.5% from the buyer · 2.5% from the seller",
+    whyFeeTitle: "Why a small verification fee?",
+    whyFeeBody: `A one-time, non-refundable fee of ${fmtINR(VERIFICATION_FEE)} is collected from the seller when a listing is submitted — this covers the broker's site visit and document check, whether or not the land eventually sells. Buyers pay nothing to browse or enquire. The closing commission above is only charged once a deal actually goes through.`,
+    regTitle: "Registered business",
+    regBody: `Bhumi Sathi is registered under the Ministry of MSME, Government of India (Udyam No. ${UDYAM_NUMBER}). This is a matter of public record and can be verified on udyamregistration.gov.in.`,
+    footerDesc: "A brokered marketplace for buying and selling land across Assam. Every deal is reviewed and closed by a broker — no fake listings, no vanishing sellers.",
+    footerFee: "Broker fee: 1.5% from buyer, 2.5% from seller — charged only when a deal closes. A small one-time verification fee applies at listing.",
+    footerServing: "Serving Kamrup, Nagaon, Jorhat, Dibrugarh, Sonitpur & more."
+  },
+  as: {
+    brandTag: "সততাৰে মধ্যস্থতা কৰা মাটি",
+    navBrowse: "মাটি চাওক", navSell: "মাটি বিক্ৰী কৰক", navHow: "কেনেকৈ কাম কৰে", navAdmin: "এডমিন", navCta: "তালিকাভুক্ত কৰক",
+    heroTitle: "অসমত মাটি কিনক আৰু বিক্ৰী কৰক, কোনো সংশয় নোহোৱাকৈ।",
+    heroLede: "ইয়াত থকা প্ৰতিটো তালিকা প্ৰকাশ হোৱাৰ আগতেই এজন দালালে পৰীক্ষা কৰে, আৰু প্ৰতিটো চুক্তি দালালৰ মাধ্যমতহে সম্পূৰ্ণ হয় — যাতে ক্ৰেতাই জানিব পাৰে মাটিখন প্ৰকৃত, আৰু বিক্ৰেতাই জানিব পাৰে ক্ৰেতাগৰাকী প্ৰকৃততে আগ্ৰহী।",
+    browseBtn: "মাটি চাওক", listBtn: "আপোনাৰ মাটি তালিকাভুক্ত কৰক",
+    recentApproved: "শেহতীয়াকৈ অনুমোদিত", seeAll: "সকলো তালিকা চাওক →",
+    howClosesTitle: "এটা চুক্তি কেনেকৈ সম্পূৰ্ণ হয়",
+    step1t: "বিক্ৰেতাই তালিকাভুক্ত কৰে, দালালে সত্যাপন কৰে", step1d: "বিক্ৰেতাজনে মাটিৰ বিৱৰণ দাখিল কৰে। পৰীক্ষা আৰু অনুমোদন নোহোৱালৈকে একো প্ৰকাশ নহয়।",
+    step2t: "ক্ৰেতাই অনুসন্ধান কৰে", step2d: "ক্ৰেতাজনে পছন্দৰ মাটি বিচাৰি পায় আৰু অনুসন্ধান পঠায়। দালালে দুয়োপক্ষক পোনপটীয়াকৈ সংযোগ কৰে।",
+    step3t: "দালালে চুক্তি সম্পূৰ্ণ কৰে", step3d: "দালালে দৰাদৰি আৰু কাগজ-পত্ৰৰ কাম চম্ভালে, আৰু চুক্তি সম্পূৰ্ণ হোৱাৰ পিছতহে মাচুল লয়।",
+    feeLabel: "দালালৰ মাচুল — কেৱল চুক্তি সম্পূৰ্ণ হ'লেহে ল'ব",
+    fullDetails: "সম্পূৰ্ণ বিৱৰণ", listYourLand: "আপোনাৰ মাটি তালিকাভুক্ত কৰক",
+    hiwTitle: "ভূমি সাথীয়ে কেনেকৈ কাম কৰে",
+    hiwSub: "এটা সহজ ধাৰণা: অসমত মাটিৰ চুক্তি সঘনাই অবিশ্বাস, উধাও হোৱা বিক্ৰেতা, বা অস্পষ্ট কাগজ-পত্ৰৰ বাবে ভাঙি পৰে। প্ৰতিটো চুক্তিৰ মাজত এজন দালাল থকাই এই সমস্যা সমাধান কৰে।",
+    forSellers: "বিক্ৰেতাসকলৰ বাবে", forSellersT: "বিনামূলীয়াকৈ তালিকাভুক্ত কৰক, সত্যাপিত হওক", forSellersD: "আপোনাৰ মাটিৰ বিৱৰণ দাখিল কৰক। প্ৰকাশ হোৱাৰ আগতে দালালে মূল কথাবোৰ পৰীক্ষা কৰে, যাতে প্ৰকৃত ক্ৰেতাসকলে ইয়াত থকা তালিকাক গুৰুত্ব সহকাৰে লয়।",
+    forBuyers: "ক্ৰেতাসকলৰ বাবে", forBuyersT: "বিশ্বাসেৰে চাওক", forBuyersD: "আপুনি দেখা প্ৰতিখন মাটিয়ে ইতিমধ্যে পৰীক্ষা পাৰ কৰিছে। এটা অনুসন্ধান পঠাওক আৰু দালালে আপোনাক পোনপটীয়াকৈ বিক্ৰেতাৰ সৈতে সংযোগ কৰিব।",
+    forEveryone: "সকলোৰে বাবে", forEveryoneT: "দালালে সম্পূৰ্ণ কৰে", forEveryoneD: "দালালে দৰাদৰিত সহায় কৰে, কাগজ-পত্ৰ সত্যাপন কৰে, আৰু পঞ্জীয়নলৈকে চুক্তিটো চাই থাকে।",
+    feeLabel2: "দালালৰ মাচুল, কেৱল সফলভাৱে চুক্তি সম্পূৰ্ণ হ'লেহে ল'ব",
+    feeValue: "ক্ৰেতাৰ পৰা ১.৫% · বিক্ৰেতাৰ পৰা ২.৫%",
+    whyFeeTitle: "সৰু সত্যাপন মাচুল কিয়?",
+    whyFeeBody: `তালিকা দাখিল কৰাৰ সময়ত বিক্ৰেতাৰ পৰা এবাৰতীয়া, ঘূৰাই নিদিয়া ${fmtINR(VERIFICATION_FEE)} মাচুল লোৱা হয় — ই দালালৰ স্থান পৰিদৰ্শন আৰু কাগজ-পত্ৰ পৰীক্ষাৰ খৰচ বহন কৰে, মাটিখন শেষত বিক্ৰী হওক বা নহওক। ক্ৰেতাসকলে চোৱা বা অনুসন্ধান কৰাৰ বাবে একো দিব নালাগে। ওপৰৰ কমিছন কেৱল চুক্তি সম্পূৰ্ণ হ'লেহে লোৱা হয়।`,
+    regTitle: "পঞ্জীকৃত ব্যৱসায়",
+    regBody: `ভূমি সাথী MSME মন্ত্ৰালয়, ভাৰত চৰকাৰৰ অধীনত পঞ্জীভুক্ত (উদ্যম নং. ${UDYAM_NUMBER})। এইটো এটা ৰাজহুৱা তথ্য আৰু udyamregistration.gov.in ত সত্যাপন কৰিব পাৰি।`,
+    footerDesc: "অসমজুৰি মাটি কিনা-বেচাৰ এক দালাল-মধ্যস্থিত বজাৰ। প্ৰতিটো চুক্তি দালালৰ দ্বাৰা পৰীক্ষা আৰু সম্পূৰ্ণ কৰা হয় — ভুৱা তালিকা নাই, উধাও হোৱা বিক্ৰেতা নাই।",
+    footerFee: "দালালৰ মাচুল: ক্ৰেতাৰ পৰা ১.৫%, বিক্ৰেতাৰ পৰা ২.৫% — কেৱল চুক্তি সম্পূৰ্ণ হ'লেহে ল'ব। তালিকাত এটা সৰু এবাৰতীয়া সত্যাপন মাচুল প্ৰযোজ্য।",
+    footerServing: "কামৰূপ, নগাঁও, যোৰহাট, ডিব্ৰুগড়, শোণিতপুৰ আৰু অধিক স্থানত সেৱা আগবঢ়োৱা হয়।"
+  }
+};
+function t(key){ return T[LANG][key]; }
+
+function applyStaticTranslations(){
+  document.getElementById('navBrandTag').textContent = t('brandTag');
+  document.getElementById('navBrowse').textContent = t('navBrowse');
+  document.getElementById('navSell').textContent = t('navSell');
+  document.getElementById('navHow').textContent = t('navHow');
+  document.getElementById('navAdmin').textContent = t('navAdmin');
+  document.getElementById('navCta').textContent = t('navCta');
+  document.getElementById('langToggleBtn').textContent = LANG === 'en' ? 'অসমীয়া' : 'English';
+  document.getElementById('footerDesc').textContent = t('footerDesc');
+  document.getElementById('footerFee').textContent = t('footerFee');
+  document.getElementById('footerServing').textContent = t('footerServing');
+}
+
+function toggleLang(){
+  LANG = (LANG === 'en') ? 'as' : 'en';
+  applyStaticTranslations();
+  navigate();
+}
+
+function waLink(message){
+  return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+}
+
+/* ---------------- DATA (in-memory demo store) ---------------- */
+const DISTRICTS = ["Kamrup Metropolitan","Kamrup","Nagaon","Sonitpur","Jorhat","Dibrugarh","Golaghat","Barpeta","Nalbari","Cachar","Karimganj","Dhubri","Tinsukia","Morigaon","Sivasagar","Charaideo","Majuli","Dhemaji"];
+const LAND_TYPES = [
+  {id:"agricultural", label:"Agricultural", tagClass:"tag-agri", icon:"🌾", bg:"#DDE6D5"},
+  {id:"residential", label:"Residential Plot", tagClass:"tag-resi", icon:"🏡", bg:"#EFE1C6"},
+  {id:"commercial", label:"Commercial", tagClass:"tag-comm", icon:"🏗️", bg:"#EFDAD3"},
+  {id:"industrial", label:"Industrial", tagClass:"tag-indu", icon:"⚙️", bg:"#E1DCEE"}
+];
+const UNITS = ["Bigha","Katha","Lecha","Acre","Sq. ft"];
+
+function typeInfo(id){ return LAND_TYPES.find(t=>t.id===id) || LAND_TYPES[0]; }
+function fmtINR(n){
+  n = Math.round(n);
+  let s = n.toString();
+  let last3 = s.substring(s.length-3);
+  let rest = s.substring(0, s.length-3);
+  if(rest !== '') last3 = ',' + last3;
+  return '₹' + rest.replace(/\B(?=(\d{2})+(?!\d))/g, ",") + last3;
+}
+
+const ID_TYPES = ["Aadhaar Card","Voter ID","PAN Card"];
+const PLACEHOLDER_PHOTO = "data:image/svg+xml;utf8," + encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' width='200' height='150'><rect width='200' height='150' fill='%23EAE3CD'/><text x='50%' y='50%' font-family='sans-serif' font-size='13' fill='%234C5347' text-anchor='middle' dy='.3em'>No photo yet</text></svg>`);
+
+let state = {
+  sellers: [
+    {id:1, name:"Bipul Saikia", phone:"98640XXXXX", idType:"Aadhaar Card", idNumber:"XXXX-XXXX-4521", dateRegistered:"2026-08-09"},
+    {id:2, name:"Nayanmoni Bora", phone:"94350XXXXX", idType:"Voter ID", idNumber:"ASS0XXXXXXX", dateRegistered:"2026-08-17"},
+    {id:3, name:"Ranjit Gogoi", phone:"90850XXXXX", idType:"Aadhaar Card", idNumber:"XXXX-XXXX-7710", dateRegistered:"2026-08-01"},
+    {id:4, name:"Probin Hazarika", phone:"87650XXXXX", idType:"Voter ID", idNumber:"ASS1XXXXXXX", dateRegistered:"2026-08-30"},
+    {id:5, name:"Dilip Das", phone:"96130XXXXX", idType:"PAN Card", idNumber:"XXXXX9821X", dateRegistered:"2026-09-02"}
+  ],
+  nextSellerId: 6,
+  currentSeller: null,
+  listings: [
+    {id:1, title:"Riverside Paddy Land near Kolong", district:"Nagaon", area:"Near Kolong River, Kolong Chapori", type:"agricultural", size:3, unit:"Bigha", price:1800000, desc:"Fertile paddy land close to the Kolong river, currently under cultivation. Road access on one side, tube well available. Clear ownership papers, ready for registration.", sellerId:1, sellerName:"Bipul Saikia", sellerPhone:"98640XXXXX", status:"approved", date:"2026-08-10", photos:[]},
+    {id:2, title:"Corner Residential Plot, Six Mile", district:"Kamrup Metropolitan", area:"Six Mile, near GS Road", type:"residential", size:3.5, unit:"Katha", price:6200000, desc:"Corner plot on a 20ft approach road, walking distance to GS Road. Ideal for a house or small apartment. Boundary walled on two sides.", sellerId:2, sellerName:"Nayanmoni Bora", sellerPhone:"94350XXXXX", status:"approved", date:"2026-08-18", photos:[]},
+    {id:3, title:"Roadside Commercial Land, AT Road", district:"Jorhat", area:"AT Road, near Cinnamora", type:"commercial", size:8, unit:"Katha", price:14500000, desc:"Flat commercial plot right on AT Road with high visibility, suitable for showroom, godown or fuel outlet. All-weather road frontage.", sellerId:3, sellerName:"Ranjit Gogoi", sellerPhone:"90850XXXXX", status:"approved", date:"2026-08-02", photos:[]},
+    {id:4, title:"Tea Garden Adjacent Plot", district:"Dibrugarh", area:"Near Chabua", type:"agricultural", size:2, unit:"Bigha", price:900000, desc:"Quiet plot bordering a tea estate, good soil, seasonal stream nearby. Suitable for horticulture or a farmhouse.", sellerId:4, sellerName:"Probin Hazarika", sellerPhone:"87650XXXXX", status:"pending", date:"2026-09-01", photos:[]},
+    {id:5, title:"Small Industrial Plot, Bamunimaidan", district:"Kamrup Metropolitan", area:"Bamunimaidan Industrial Estate", type:"industrial", size:1.2, unit:"Acre", price:22000000, desc:"Fenced industrial plot with existing shed structure, three-phase power connection available on the boundary.", sellerId:5, sellerName:"Dilip Das", sellerPhone:"96130XXXXX", status:"pending", date:"2026-09-03", photos:[]}
+  ],
+  inquiries: [],
+  nextListingId: 6,
+  nextInquiryId: 1,
+  adminUnlocked: false
+};
+
+/* ---------------- HELPERS ---------------- */
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window._toastTimer);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+
+function riverDivider(){
+  return `<svg class="river" viewBox="0 0 1000 40" preserveAspectRatio="none"><path d="M0,20 C150,5 250,35 400,20 C550,5 650,35 800,18 C900,8 950,25 1000,20" fill="none" stroke="#C4922E" stroke-width="1.5" opacity="0.55"/></svg>`;
+}
+
+function plotIconHTML(type, size){
+  const info = typeInfo(type);
+  size = size || 96;
+  return `<div class="plot-icon" style="background:${info.bg};width:${size}px;">${info.icon}</div>`;
+}
+
+/* ---------------- ROUTER ---------------- */
+function currentRoute(){
+  const hash = location.hash.replace('#/', '') || 'home';
+  const parts = hash.split('/');
+  return {name: parts[0], param: parts[1]};
+}
+
+function navigate(){
+  const r = currentRoute();
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    l.classList.toggle('active', l.dataset.route === r.name);
+  });
+  document.getElementById('navLinks').classList.remove('open');
+  const app = document.getElementById('app');
+  window.scrollTo(0,0);
+  const waFloat = document.getElementById('waFloat');
+  if(waFloat) waFloat.href = waLink("Hi, I'm interested in land on Bhumi Sathi. Can you help me?");
+  switch(r.name){
+    case 'home': app.innerHTML = viewHome(); break;
+    case 'browse': app.innerHTML = viewBrowse(); attachBrowseHandlers(); break;
+    case 'listing': app.innerHTML = viewListingDetail(parseInt(r.param)); attachDetailHandlers(parseInt(r.param)); break;
+    case 'sell': app.innerHTML = viewSell(); attachSellHandlers(); break;
+    case 'how-it-works': app.innerHTML = viewHowItWorks(); break;
+    case 'admin': app.innerHTML = viewAdmin(); attachAdminHandlers(); break;
+    default: app.innerHTML = viewHome();
+  }
+}
+window.addEventListener('hashchange', navigate);
+
+document.getElementById('navToggle').addEventListener('click', ()=>{
+  document.getElementById('navLinks').classList.toggle('open');
+});
+
+/* ---------------- VIEW: HOME ---------------- */
+function viewHome(){
+  const approved = state.listings.filter(l=>l.status==='approved').slice(0,4);
+  return `
+  <section class="hero wrap">
+    <div class="hero-grid">
+      <div>
+        <h1>${t('heroTitle')}</h1>
+        <p class="lede">${t('heroLede')}</p>
+        <div style="margin-top:26px;display:flex;gap:14px;flex-wrap:wrap;">
+          <a href="#/browse" class="btn btn-primary">${t('browseBtn')}</a>
+          <a href="#/sell" class="btn btn-ghost">${t('listBtn')}</a>
+        </div>
+        ${riverDivider()}
+      </div>
+      <div class="search-card">
+        <h3>Find land by area</h3>
+        <div class="field">
+          <label>District</label>
+          <select id="quickDistrict">
+            <option value="">All districts</option>
+            ${DISTRICTS.map(d=>`<option value="${d}">${d}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label>Land type</label>
+          <select id="quickType">
+            <option value="">Any type</option>
+            ${LAND_TYPES.map(lt=>`<option value="${lt.id}">${lt.label}</option>`).join('')}
+          </select>
+        </div>
+        <button class="btn btn-primary btn-block" onclick="quickSearch()">Search Listings</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head">
+      <h2>${t('recentApproved')}</h2>
+      <a href="#/browse" class="see-all">${t('seeAll')}</a>
+    </div>
+    <div class="listing-list">
+      ${approved.length ? approved.map(listingRowHTML).join('') : `<div class="empty-state"><span class="serif">No approved listings yet</span>Check back soon, or list your own land.</div>`}
+    </div>
+  </section>
+
+  <section class="section wrap">
+    <div class="section-head"><h2>${t('howClosesTitle')}</h2></div>
+    <div class="steps">
+      <div class="step"><div class="step-num">01</div><h3>${t('step1t')}</h3><p>${t('step1d')}</p></div>
+      <div class="step"><div class="step-num">02</div><h3>${t('step2t')}</h3><p>${t('step2d')}</p></div>
+      <div class="step"><div class="step-num">03</div><h3>${t('step3t')}</h3><p>${t('step3d')}</p></div>
+    </div>
+    <div class="commission-strip">
+      <div>
+        <div class="label">${t('feeLabel')}</div>
+        <div class="value">1.5% buyer + 2.5% seller</div>
+      </div>
+      <a href="#/how-it-works" class="btn btn-secondary">${t('fullDetails')}</a>
+      <a href="#/sell" class="btn btn-primary">${t('listYourLand')}</a>
+    </div>
+  </section>
+  `;
+}
+
+function quickSearch(){
+  const d = document.getElementById('quickDistrict').value;
+  const t = document.getElementById('quickType').value;
+  location.hash = '#/browse';
+  setTimeout(()=>{
+    if(d) document.getElementById('filterDistrict').value = d;
+    if(t) document.getElementById('filterType').value = t;
+    applyFilters();
+  }, 30);
+}
+
+function thumbHTML(l, size){
+  size = size || 96;
+  if(l.photos && l.photos.length){
+    return `<img src="${l.photos[0]}" style="width:${size}px;height:${Math.round(size*0.75)}px;object-fit:cover;border-radius:3px;flex-shrink:0;">`;
+  }
+  return plotIconHTML(l.type, size);
+}
+
+function listingRowHTML(l){
+  const info = typeInfo(l.type);
+  return `
+  <a href="#/listing/${l.id}" class="listing-row">
+    ${thumbHTML(l)}
+    <div>
+      <div class="listing-title">${l.title}</div>
+      <div class="listing-meta"><span>${l.area}</span><span>${l.district}</span><span>${l.size} ${l.unit}</span></div>
+      <span class="listing-tag ${info.tagClass}">${info.label}</span>
+    </div>
+    <div class="listing-price">
+      <div class="price-amt">${fmtINR(l.price)}</div>
+      <div class="price-sub">${(l.price / (l.size)).toFixed(0) > 0 ? 'per ' + l.unit + ': ' + fmtINR(l.price/l.size) : ''}</div>
+    </div>
+  </a>`;
+}
+
+/* ---------------- VIEW: BROWSE ---------------- */
+function viewBrowse(){
+  return `
+  <div class="wrap page-title-block">
+    <h1>Browse Land</h1>
+    <p>All listings below have been reviewed and approved. Contact details are shared through the broker once you send an enquiry.</p>
+  </div>
+  <div class="wrap">
+    <div class="filter-bar">
+      <select id="filterDistrict"><option value="">All districts</option>${DISTRICTS.map(d=>`<option value="${d}">${d}</option>`).join('')}</select>
+      <select id="filterType"><option value="">Any type</option>${LAND_TYPES.map(t=>`<option value="${t.id}">${t.label}</option>`).join('')}</select>
+      <select id="filterPrice">
+        <option value="">Any price</option>
+        <option value="1000000">Under ₹10L</option>
+        <option value="5000000">Under ₹50L</option>
+        <option value="20000000">Under ₹2Cr</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear</button>
+    </div>
+    <div class="results-count" id="resultsCount"></div>
+    <div class="listing-list" id="listingResults"></div>
+  </div>
+  `;
+}
+
+function attachBrowseHandlers(){
+  ['filterDistrict','filterType','filterPrice'].forEach(id=>{
+    document.getElementById(id).addEventListener('change', applyFilters);
+  });
+  applyFilters();
+}
+
+function applyFilters(){
+  const d = document.getElementById('filterDistrict').value;
+  const t = document.getElementById('filterType').value;
+  const p = document.getElementById('filterPrice').value;
+  let results = state.listings.filter(l=>l.status==='approved');
+  if(d) results = results.filter(l=>l.district===d);
+  if(t) results = results.filter(l=>l.type===t);
+  if(p) results = results.filter(l=>l.price <= parseInt(p));
+  document.getElementById('resultsCount').textContent = `${results.length} listing${results.length!==1?'s':''} found`;
+  document.getElementById('listingResults').innerHTML = results.length ?
+    results.map(listingRowHTML).join('') :
+    `<div class="empty-state"><span class="serif">No land matches these filters</span>Try widening your search, or check back later as new listings are approved.</div>`;
+}
+
+function clearFilters(){
+  document.getElementById('filterDistrict').value='';
+  document.getElementById('filterType').value='';
+  document.getElementById('filterPrice').value='';
+  applyFilters();
+}
+
+/* ---------------- VIEW: LISTING DETAIL ---------------- */
+function viewListingDetail(id){
+  const l = state.listings.find(x=>x.id===id);
+  if(!l) return `<div class="wrap page-title-block"><h1>Listing not found</h1><p><a href="#/browse" class="btn btn-ghost" style="margin-top:16px;">Back to Browse</a></p></div>`;
+  const info = typeInfo(l.type);
+  const buyerFee = l.price * BUYER_FEE_PCT;
+  const sellerFee = l.price * SELLER_FEE_PCT;
+  return `
+  <div class="wrap" style="padding-top:36px;">
+    <a href="#/browse" style="font-size:0.85rem;color:var(--ink-soft);">← Back to listings</a>
+    <div class="detail-grid" style="margin-top:20px;">
+      <div>
+        ${l.photos && l.photos.length ?
+          `<div class="detail-hero" style="background:${info.bg};padding:0;overflow:hidden;"><img src="${l.photos[0]}" style="width:100%;height:100%;object-fit:cover;"></div>
+           ${l.photos.length>1 ? `<div style="display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;">${l.photos.slice(1).map(p=>`<img src="${p}" style="width:90px;height:68px;object-fit:cover;border-radius:3px;border:1px solid var(--line);">`).join('')}</div>` : ''}`
+          : `<div class="detail-hero" style="background:${info.bg};">${info.icon}</div>`
+        }
+        <h1 class="detail-title">${l.title}</h1>
+        <div class="detail-loc">${l.area}, ${l.district}</div>
+        <span class="listing-tag ${info.tagClass}">${info.label}</span>
+        <div class="spec-grid">
+          <div><div class="spec-label">Plot Size</div><div class="spec-val">${l.size} ${l.unit}</div></div>
+          <div><div class="spec-label">Asking Price</div><div class="spec-val">${fmtINR(l.price)}</div></div>
+          <div><div class="spec-label">District</div><div class="spec-val">${l.district}</div></div>
+          <div><div class="spec-label">Listed On</div><div class="spec-val">${l.date}</div></div>
+        </div>
+        <div class="desc-block"><strong style="color:var(--ink);">About this land</strong><br>${l.desc}</div>
+      </div>
+      <div class="contact-card">
+        <div class="price-amt">${fmtINR(l.price)}</div>
+        <div class="price-sub">${l.size} ${l.unit} · ${info.label}</div>
+        <div id="enquiryFormHolder">
+          <a href="${waLink(`Hi, I'm interested in "${l.title}" (${l.area}, ${l.district}) listed for ${fmtINR(l.price)} on Bhumi Sathi. Please share more details.`)}" target="_blank" rel="noopener" class="btn btn-block" style="background:#25D366;color:white;margin-bottom:10px;">💬 Chat on WhatsApp about this land</a>
+          <div style="text-align:center;font-size:0.78rem;color:var(--ink-soft);margin:10px 0;">— or send your details here —</div>
+          <div class="form-row"><label>Your Name</label><input id="buyerName" placeholder="e.g. Rina Devi"></div>
+          <div class="form-row"><label>Phone Number</label><input id="buyerPhone" placeholder="e.g. 98xxxxxxxx"></div>
+          <div class="form-row"><label>Message (optional)</label><textarea id="buyerMsg" placeholder="Any questions about the land, or a good time to call"></textarea></div>
+          <button class="btn btn-primary btn-block" onclick="submitInquiry(${l.id})">Contact Broker About This Land</button>
+        </div>
+        <div class="fee-note">If this deal closes, the broker charges ${(BUYER_FEE_PCT*100)}% of the sale price to the buyer (${fmtINR(buyerFee)} at asking price) and ${(SELLER_FEE_PCT*100)}% to the seller (${fmtINR(sellerFee)}).</div>
+      </div>
+    </div>
+  </div>
+  `;
+}
+
+function attachDetailHandlers(id){ /* inline handlers used */ }
+
+function submitInquiry(listingId){
+  const name = document.getElementById('buyerName').value.trim();
+  const phone = document.getElementById('buyerPhone').value.trim();
+  const msg = document.getElementById('buyerMsg').value.trim();
+  if(!name || !phone){
+    showToast('Please add your name and phone number.');
+    return;
+  }
+  state.inquiries.push({
+    id: state.nextInquiryId++,
+    listingId, buyerName:name, buyerPhone:phone, message:msg,
+    date: new Date().toISOString().slice(0,10)
+  });
+  document.getElementById('enquiryFormHolder').innerHTML = `
+    <div style="background:var(--leaf-soft);color:var(--leaf);padding:16px;border-radius:4px;font-size:0.92rem;">
+      <strong>Sent.</strong> The broker has your details and will reach out about this land shortly.
+    </div>`;
+  showToast('Enquiry sent to the broker.');
+}
+
+/* ---------------- VIEW: SELL (seller registration + submit listing) ---------------- */
+let pendingPhotos = [];
+
+function viewSell(){
+  if(!state.currentSeller){
+    return `
+    <div class="wrap page-title-block">
+      <h1>Register as a Seller</h1>
+      <p>Before you can list land, we need your details on file. This is what lets the broker cross-check who you are against the land documents before anything goes live — it also means buyers can trust that every seller on the site is a real, verified person.</p>
+    </div>
+    <div class="wrap" style="padding-bottom:60px;">
+      <div class="form-note">Registration takes a minute. Your ID details are only used by the broker for verification — they are never shown publicly on your listing.</div>
+      <div class="form-shell" id="registerFormShell">
+        <div class="two-col">
+          <div class="form-row"><label>Full Name</label><input id="rName" placeholder="e.g. Bipul Saikia"></div>
+          <div class="form-row"><label>Phone Number</label><input id="rPhone" placeholder="e.g. 98xxxxxxxx"></div>
+        </div>
+        <div class="two-col">
+          <div class="form-row"><label>ID Type</label><select id="rIdType">${ID_TYPES.map(t=>`<option>${t}</option>`).join('')}</select></div>
+          <div class="form-row"><label>ID Number</label><input id="rIdNumber" placeholder="As printed on the ID"></div>
+        </div>
+        <div class="form-row"><label>Email (optional)</label><input id="rEmail" placeholder="you@example.com"></div>
+        <button class="btn btn-primary" onclick="registerSeller()">Register & Continue to List Land</button>
+      </div>
+    </div>`;
+  }
+
+  const seller = state.currentSeller;
+  pendingPhotos = [];
+  return `
+  <div class="wrap page-title-block">
+    <h1>List Your Land</h1>
+    <p>Fill in your land details and upload real photos of the plot. Every submission is reviewed by the broker — including a match against your registered ID — before it appears publicly.</p>
+  </div>
+  <div class="wrap" style="padding-bottom:60px;">
+    <div class="form-note">Registered as <strong>${seller.name}</strong> (${seller.idType}, verification pending admin cross-check). Not you? <a href="#" onclick="switchSeller();return false;" style="color:var(--leaf);text-decoration:underline;">Register a different seller</a></div>
+    <div class="form-note" style="background:#f0e3d2;color:#8a6a1f;">A one-time, non-refundable verification fee of <strong>${fmtINR(VERIFICATION_FEE)}</strong> applies when you submit a listing — this covers the broker's site visit and document check, whether or not the land eventually sells. It is separate from the closing commission (charged only if a deal goes through: 1.5% from the buyer, 2.5% from the seller).</div>
+    <div class="form-shell" id="sellFormShell">
+      <div class="form-row"><label>Listing Title</label><input id="sTitle" placeholder="e.g. Roadside Plot near Six Mile"></div>
+      <div class="two-col">
+        <div class="form-row"><label>District</label>
+          <select id="sDistrict"><option value="">Select district</option>${DISTRICTS.map(d=>`<option>${d}</option>`).join('')}</select>
+        </div>
+        <div class="form-row"><label>Area / Locality</label><input id="sArea" placeholder="e.g. Near Kolong River"></div>
+      </div>
+      <div class="two-col">
+        <div class="form-row"><label>Land Type</label>
+          <select id="sType">${LAND_TYPES.map(t=>`<option value="${t.id}">${t.label}</option>`).join('')}</select>
+        </div>
+        <div class="form-row"><label>Asking Price (₹)</label><input id="sPrice" type="number" placeholder="e.g. 1800000"></div>
+      </div>
+      <div class="two-col">
+        <div class="form-row"><label>Plot Size</label><input id="sSize" type="number" step="0.1" placeholder="e.g. 3"></div>
+        <div class="form-row"><label>Unit</label>
+          <select id="sUnit">${UNITS.map(u=>`<option>${u}</option>`).join('')}</select>
+        </div>
+      </div>
+      <div class="form-row"><label>Description</label><textarea id="sDesc" placeholder="Road access, water source, nearby landmarks, ownership documents available, etc."></textarea></div>
+      <div class="form-row">
+        <label>Land Photos</label>
+        <input type="file" id="sPhotos" accept="image/*" multiple onchange="handlePhotoSelect(event)">
+        <div class="hint">Upload real photos taken on-site — this is what the broker checks against before approving.</div>
+        <div id="photoPreview" style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;"></div>
+      </div>
+      <div class="form-row" style="display:flex;gap:10px;align-items:flex-start;">
+        <input type="checkbox" id="sFeeAgree" style="width:auto;margin-top:4px;">
+        <label style="font-weight:400;font-size:0.85rem;" for="sFeeAgree">I understand a ${fmtINR(VERIFICATION_FEE)} verification fee applies to this submission, and I agree to pay it so the broker can visit and verify my land.</label>
+      </div>
+      <button class="btn btn-primary" onclick="submitListing()">Submit for Approval</button>
+    </div>
+  </div>
+  `;
+}
+
+function attachSellHandlers(){}
+
+function registerSeller(){
+  const name = document.getElementById('rName').value.trim();
+  const phone = document.getElementById('rPhone').value.trim();
+  const idType = document.getElementById('rIdType').value;
+  const idNumber = document.getElementById('rIdNumber').value.trim();
+  const email = document.getElementById('rEmail').value.trim();
+  if(!name || !phone || !idNumber){
+    showToast('Please fill in name, phone and ID number.');
+    return;
+  }
+  const seller = {
+    id: state.nextSellerId++, name, phone, idType, idNumber, email,
+    dateRegistered: new Date().toISOString().slice(0,10)
+  };
+  state.sellers.push(seller);
+  state.currentSeller = seller;
+  document.getElementById('app').innerHTML = viewSell();
+  showToast('Registered. Now add your land details.');
+}
+
+function switchSeller(){
+  state.currentSeller = null;
+  document.getElementById('app').innerHTML = viewSell();
+}
+
+function handlePhotoSelect(event){
+  const files = Array.from(event.target.files || []);
+  files.forEach(file=>{
+    const reader = new FileReader();
+    reader.onload = e=>{
+      pendingPhotos.push(e.target.result);
+      renderPhotoPreview();
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function renderPhotoPreview(){
+  const holder = document.getElementById('photoPreview');
+  if(!holder) return;
+  holder.innerHTML = pendingPhotos.map((src,i)=>
+    `<div style="position:relative;"><img src="${src}" style="width:84px;height:64px;object-fit:cover;border-radius:3px;border:1px solid var(--line);"><button onclick="removePendingPhoto(${i})" style="position:absolute;top:-6px;right:-6px;background:var(--soil);color:white;width:18px;height:18px;border-radius:50%;font-size:11px;line-height:18px;">×</button></div>`
+  ).join('');
+}
+function removePendingPhoto(i){
+  pendingPhotos.splice(i,1);
+  renderPhotoPreview();
+}
+
+function submitListing(){
+  const seller = state.currentSeller;
+  const title = document.getElementById('sTitle').value.trim();
+  const district = document.getElementById('sDistrict').value;
+  const area = document.getElementById('sArea').value.trim();
+  const type = document.getElementById('sType').value;
+  const price = parseFloat(document.getElementById('sPrice').value);
+  const size = parseFloat(document.getElementById('sSize').value);
+  const unit = document.getElementById('sUnit').value;
+  const desc = document.getElementById('sDesc').value.trim();
+
+  if(!title || !district || !area || !price || !size){
+    showToast('Please fill in all required fields.');
+    return;
+  }
+  if(pendingPhotos.length === 0){
+    showToast('Please upload at least one photo of the land before submitting.');
+    return;
+  }
+  if(!document.getElementById('sFeeAgree').checked){
+    showToast(`Please confirm you agree to the ${fmtINR(VERIFICATION_FEE)} verification fee before submitting.`);
+    return;
+  }
+  const newListing = {
+    id: state.nextListingId++,
+    title, district, area, type, size, unit, price, desc,
+    sellerId: seller.id, sellerName:seller.name, sellerPhone:seller.phone,
+    status:'pending', date: new Date().toISOString().slice(0,10),
+    photos: pendingPhotos.slice()
+  };
+  state.listings.unshift(newListing);
+  pendingPhotos = [];
+  document.getElementById('sellFormShell').innerHTML = `
+    <div class="success-box">
+      <span class="serif">Submitted for review</span>
+      Thanks, ${seller.name.split(' ')[0]}. "${title}" has been sent to the broker for approval, along with your registered ID for cross-check. The broker will contact you to collect the ${fmtINR(VERIFICATION_FEE)} verification fee and arrange a site visit — approved listings usually go up within a day after that.
+      <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;">
+        <a href="${waLink(`Hi, I just submitted my land "${title}" (${area}, ${district}) on Bhumi Sathi for approval. My name is ${seller.name}.`)}" target="_blank" rel="noopener" class="btn btn-sm" style="background:#25D366;color:white;">💬 Confirm on WhatsApp</a>
+        <a href="#/browse" class="btn btn-ghost btn-sm">Browse other land</a>
+      </div>
+    </div>`;
+  showToast('Listing submitted for approval.');
+}
+
+/* ---------------- VIEW: HOW IT WORKS ---------------- */
+function viewHowItWorks(){
+  return `
+  <div class="wrap page-title-block">
+    <h1>${t('hiwTitle')}</h1>
+    <p>${t('hiwSub')}</p>
+  </div>
+  <div class="wrap section" style="border-top:none;">
+    <div class="steps">
+      <div class="step"><div class="step-num">${t('forSellers')}</div><h3>${t('forSellersT')}</h3><p>${t('forSellersD')}</p></div>
+      <div class="step"><div class="step-num">${t('forBuyers')}</div><h3>${t('forBuyersT')}</h3><p>${t('forBuyersD')}</p></div>
+      <div class="step"><div class="step-num">${t('forEveryone')}</div><h3>${t('forEveryoneT')}</h3><p>${t('forEveryoneD')}</p></div>
+    </div>
+    <div class="commission-strip">
+      <div>
+        <div class="label">${t('feeLabel2')}</div>
+        <div class="value">${t('feeValue')}</div>
+      </div>
+      <a href="#/sell" class="btn btn-secondary">List land</a>
+      <a href="#/browse" class="btn btn-primary">Browse land</a>
+    </div>
+    <div style="margin-top:40px;max-width:60ch;color:var(--ink-soft);">
+      <p><strong style="color:var(--ink);">${t('whyFeeTitle')}</strong> ${t('whyFeeBody')}</p>
+      <p style="margin-top:16px;"><strong style="color:var(--ink);">${t('regTitle')}</strong> — ${t('regBody')}</p>
+    </div>
+  </div>
+  `;
+}
+
+/* ---------------- VIEW: ADMIN ---------------- */
+let adminTab = 'pending';
+
+function viewAdmin(){
+  if(!state.adminUnlocked){
+    return `
+    <div class="wrap admin-gate">
+      <h1 style="font-size:1.6rem;margin-bottom:10px;">Broker Dashboard</h1>
+      <p style="color:var(--ink-soft);margin-bottom:20px;font-size:0.9rem;">This area is for the broker only — approve listings, review enquiries, and close deals.</p>
+      <input id="adminPass" type="password" placeholder="Enter access code" style="width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:3px;margin-bottom:12px;">
+      <button class="btn btn-primary btn-block" onclick="unlockAdmin()">Enter Dashboard</button>
+    </div>`;
+  }
+
+  const pending = state.listings.filter(l=>l.status==='pending');
+  const approved = state.listings.filter(l=>l.status==='approved');
+  const closed = state.listings.filter(l=>l.status==='closed');
+  const totalCommission = closed.reduce((sum,l)=> sum + (l.salePrice||l.price)*TOTAL_FEE_PCT, 0);
+
+  return `
+  <div class="wrap page-title-block">
+    <h1>Broker Dashboard</h1>
+    <p>Approve new listings, follow up on buyer enquiries, and record closed deals with commission calculated automatically.</p>
+  </div>
+  <div class="wrap">
+    <div class="stat-row">
+      <div class="stat-box"><div class="num">${pending.length}</div><div class="lbl">Pending approval</div></div>
+      <div class="stat-box"><div class="num">${approved.length}</div><div class="lbl">Live listings</div></div>
+      <div class="stat-box"><div class="num">${state.inquiries.length}</div><div class="lbl">Buyer enquiries</div></div>
+      <div class="stat-box"><div class="num">${fmtINR(totalCommission)}</div><div class="lbl">Commission earned</div></div>
+    </div>
+
+    <div class="admin-tabs">
+      <button class="admin-tab ${adminTab==='pending'?'active':''}" data-tab="pending">Pending (${pending.length})</button>
+      <button class="admin-tab ${adminTab==='listings'?'active':''}" data-tab="listings">All Listings</button>
+      <button class="admin-tab ${adminTab==='inquiries'?'active':''}" data-tab="inquiries">Enquiries (${state.inquiries.length})</button>
+      <button class="admin-tab ${adminTab==='closed'?'active':''}" data-tab="closed">Closed Deals</button>
+      <button class="admin-tab ${adminTab==='sellers'?'active':''}" data-tab="sellers">Registered Sellers (${state.sellers.length})</button>
+    </div>
+    <div id="adminTabContent">${renderAdminTab()}</div>
+  </div>
+  `;
+}
+
+function renderAdminTab(){
+  if(adminTab === 'pending') return renderPendingTab();
+  if(adminTab === 'listings') return renderAllListingsTab();
+  if(adminTab === 'inquiries') return renderInquiriesTab();
+  if(adminTab === 'closed') return renderClosedTab();
+  if(adminTab === 'sellers') return renderSellersTab();
+}
+
+function renderSellersTab(){
+  if(!state.sellers.length) return `<div class="empty-state"><span class="serif">No sellers registered yet</span></div>`;
+  return `<div class="table-scroll"><table>
+    <tr><th>Name</th><th>Phone</th><th>ID Type</th><th>ID Number</th><th>Registered</th><th>Listings</th></tr>
+    ${state.sellers.slice().reverse().map(s=>{
+      const count = state.listings.filter(l=>l.sellerId===s.id).length;
+      return `<tr>
+        <td>${s.name}</td><td>${s.phone}</td><td>${s.idType}</td><td>${s.idNumber}</td><td>${s.dateRegistered}</td><td>${count}</td>
+      </tr>`;
+    }).join('')}
+  </table></div>`;
+}
+
+function renderPendingTab(){
+  const pending = state.listings.filter(l=>l.status==='pending');
+  if(!pending.length) return `<div class="empty-state"><span class="serif">Nothing waiting</span>All submitted listings have been reviewed.</div>`;
+  return pending.map(l=>{
+    const seller = state.sellers.find(s=>s.id===l.sellerId);
+    return `
+    <div style="border:1px solid var(--line);border-radius:4px;padding:20px;margin-bottom:18px;background:var(--white);">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+        <div style="flex:1;min-width:220px;">
+          <div class="listing-title" style="margin-bottom:4px;">${l.title}</div>
+          <div class="listing-meta"><span>${l.area}</span><span>${l.district}</span><span>${l.size} ${l.unit}</span><span>${fmtINR(l.price)}</span></div>
+        </div>
+        <div class="row-actions">
+          <button class="btn btn-secondary btn-sm" onclick="setListingStatus(${l.id},'approved')">Approve — Publish</button>
+          <button class="btn btn-ghost btn-sm" onclick="setListingStatus(${l.id},'rejected')">Reject</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin:14px 0;">
+        ${l.photos && l.photos.length ? l.photos.map(p=>`<img src="${p}" style="width:100px;height:76px;object-fit:cover;border-radius:3px;border:1px solid var(--line);">`).join('') : `<img src="${PLACEHOLDER_PHOTO}" style="width:100px;height:76px;object-fit:cover;border-radius:3px;border:1px solid var(--line);">`}
+      </div>
+      <div style="background:var(--paper);border-radius:3px;padding:12px 14px;font-size:0.85rem;">
+        <strong>Seller on record for cross-check:</strong>
+        ${seller ? `${seller.name} · ${seller.phone} · ${seller.idType}: ${seller.idNumber} · registered ${seller.dateRegistered}` : `${l.sellerName} · ${l.sellerPhone} (no registration record found — verify manually)`}
+        <div style="margin-top:6px;color:var(--gold);"><strong>Collect ${fmtINR(VERIFICATION_FEE)} verification fee</strong> when you do the site visit for this listing.</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderAllListingsTab(){
+  return `<div class="table-scroll"><table>
+    <tr><th>Listing</th><th>District</th><th>Price</th><th>Status</th><th>Action</th></tr>
+    ${state.listings.map(l=>`
+      <tr>
+        <td><strong>${l.title}</strong></td>
+        <td>${l.district}</td>
+        <td>${fmtINR(l.price)}</td>
+        <td><span class="status-pill status-${l.status}">${l.status}</span></td>
+        <td class="row-actions">
+          <a href="#/listing/${l.id}" class="btn btn-ghost btn-sm">View</a>
+          ${l.status==='approved' ? `<button class="btn btn-primary btn-sm" onclick="openCloseDeal(${l.id})">Mark Closed</button>` : ''}
+        </td>
+      </tr>
+      ${l._showCloseForm ? closeDealFormHTML(l) : ''}
+      `).join('')}
+  </table></div>`;
+}
+
+function closeDealFormHTML(l){
+  return `<tr><td colspan="5">
+    <div class="close-deal-form">
+      <div class="field"><label>Final sale price (₹)</label><input type="number" id="closePrice_${l.id}" value="${l.price}"></div>
+      <button class="btn btn-primary btn-sm" onclick="confirmCloseDeal(${l.id})">Confirm Closed & Calculate Fee</button>
+      <button class="btn btn-ghost btn-sm" onclick="cancelCloseDeal(${l.id})">Cancel</button>
+    </div>
+  </td></tr>`;
+}
+
+function openCloseDeal(id){
+  state.listings.forEach(l=>l._showCloseForm = (l.id===id));
+  refreshAdminTab();
+}
+function cancelCloseDeal(id){
+  const l = state.listings.find(x=>x.id===id);
+  l._showCloseForm = false;
+  refreshAdminTab();
+}
+function confirmCloseDeal(id){
+  const l = state.listings.find(x=>x.id===id);
+  const price = parseFloat(document.getElementById('closePrice_'+id).value) || l.price;
+  l.status = 'closed';
+  l.salePrice = price;
+  l._showCloseForm = false;
+  refreshAdmin();
+  showToast(`Deal closed. Buyer fee ${fmtINR(price*BUYER_FEE_PCT)}, seller fee ${fmtINR(price*SELLER_FEE_PCT)}.`);
+}
+
+function renderInquiriesTab(){
+  if(!state.inquiries.length) return `<div class="empty-state"><span class="serif">No enquiries yet</span>Buyer enquiries from listing pages will show up here.</div>`;
+  return `<div class="table-scroll"><table>
+    <tr><th>Buyer</th><th>Phone</th><th>Listing</th><th>Message</th><th>Date</th></tr>
+    ${state.inquiries.slice().reverse().map(i=>{
+      const listing = state.listings.find(l=>l.id===i.listingId);
+      return `<tr>
+        <td>${i.buyerName}</td>
+        <td>${i.buyerPhone}</td>
+        <td>${listing ? `<a href="#/listing/${listing.id}">${listing.title}</a>` : '—'}</td>
+        <td>${i.message || '<span style="color:var(--ink-soft);">—</span>'}</td>
+        <td>${i.date}</td>
+      </tr>`;
+    }).join('')}
+  </table></div>`;
+}
+
+function renderClosedTab(){
+  const closed = state.listings.filter(l=>l.status==='closed');
+  if(!closed.length) return `<div class="empty-state"><span class="serif">No deals closed yet</span>Closed deals and their commission will be recorded here.</div>`;
+  const totalBuyer = closed.reduce((s,l)=>s+l.salePrice*BUYER_FEE_PCT,0);
+  const totalSeller = closed.reduce((s,l)=>s+l.salePrice*SELLER_FEE_PCT,0);
+  return `
+  <div class="table-scroll"><table>
+    <tr><th>Listing</th><th>Sale Price</th><th>Buyer Fee (${BUYER_FEE_PCT*100}%)</th><th>Seller Fee (${SELLER_FEE_PCT*100}%)</th><th>Total Commission</th></tr>
+    ${closed.map(l=>`
+      <tr>
+        <td>${l.title}</td>
+        <td>${fmtINR(l.salePrice)}</td>
+        <td>${fmtINR(l.salePrice*BUYER_FEE_PCT)}</td>
+        <td>${fmtINR(l.salePrice*SELLER_FEE_PCT)}</td>
+        <td><strong>${fmtINR(l.salePrice*TOTAL_FEE_PCT)}</strong></td>
+      </tr>`).join('')}
+  </table></div>
+  <div class="commission-strip" style="margin-top:24px;">
+    <div><div class="label">Total commission earned across ${closed.length} closed deal${closed.length!==1?'s':''}</div><div class="value">${fmtINR(totalBuyer+totalSeller)}</div></div>
+    <div><div class="label">From buyers</div><div class="value" style="font-size:1.1rem;">${fmtINR(totalBuyer)}</div></div>
+    <div><div class="label">From sellers</div><div class="value" style="font-size:1.1rem;">${fmtINR(totalSeller)}</div></div>
+  </div>`;
+}
+
+function setListingStatus(id, status){
+  const l = state.listings.find(x=>x.id===id);
+  l.status = status;
+  refreshAdmin();
+  showToast(status==='approved' ? 'Listing approved and now live.' : 'Listing rejected.');
+}
+
+function refreshAdminTab(){
+  document.getElementById('adminTabContent').innerHTML = renderAdminTab();
+}
+function refreshAdmin(){
+  document.getElementById('app').innerHTML = viewAdmin();
+  attachAdminHandlers();
+}
+
+function unlockAdmin(){
+  const val = document.getElementById('adminPass').value;
+  if(val === 'Startup@2026'){
+    state.adminUnlocked = true;
+    refreshAdmin();
+  } else {
+    showToast('Incorrect access code.');
+  }
+}
+
+function attachAdminHandlers(){
+  document.querySelectorAll('.admin-tab').forEach(tab=>{
+    tab.addEventListener('click', ()=>{
+      adminTab = tab.dataset.tab;
+      refreshAdmin();
+    });
+  });
+}
+
+/* ---------------- INIT ---------------- */
+document.getElementById('udyamBadgeNav').textContent = "Udyam Verified";
+document.getElementById('udyamBadgeFooter').textContent = UDYAM_NUMBER;
+applyStaticTranslations();
+navigate();
+</script>
+</body>
+</html>
