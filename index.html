@@ -4,9 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bhumi Sathi — Buy & Sell Land in Assam</title>
+<meta name="description" content="Bhumi Sathi is a broker-verified marketplace to buy and sell land across Assam — Kamrup, Nagaon, Jorhat, Dibrugarh, Sonitpur, Upper Assam and more. Every listing is verified before it goes live.">
+<meta name="keywords" content="land for sale Assam, buy land Assam, sell land Assam, Assam real estate broker, plot for sale Assam, agricultural land Assam">
+<meta property="og:title" content="Bhumi Sathi — Buy & Sell Land in Assam">
+<meta property="og:description" content="A broker-verified marketplace to buy and sell land across Assam. Every listing is checked before it goes live.">
+<meta property="og:type" content="website">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
   :root{
     --paper:#F3EEDF;
@@ -258,8 +264,10 @@
     position:fixed;bottom:24px;left:50%;transform:translateX(-50%);
     background:var(--ink);color:var(--paper);padding:14px 22px;border-radius:4px;font-size:0.9rem;
     box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:200;opacity:0;pointer-events:none;transition:opacity .25s, transform .25s;
+    max-width:90vw;text-align:center;
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(-6px);}
+  .toast.error{background:#7a2318;}
 
   .page-title-block{padding:44px 0 8px;}
   .page-title-block h1{font-size:2.2rem;}
@@ -331,6 +339,83 @@ const VERIFICATION_FEE = 1000;
 
 /* MSME / Udyam registration number, shown as a trust badge — number only, no personal contact details published */
 const UDYAM_NUMBER = "UDYAM-AS-08-0026466";
+
+/* ---------------- SUPABASE (real backend) ---------------- */
+/* IMPORTANT: replace these two with your own Supabase project's values.
+   Find them in your Supabase dashboard: Project Settings → API → "Project URL" and "anon public" key. */
+const SUPABASE_URL = "https://vqwooxhwsyftfwhrumjn.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_s0D9jhG-ZvghVivUmnuiUQ_kmoVpCOQ";
+
+const USE_SUPABASE = !SUPABASE_URL.startsWith("YOUR_") && !SUPABASE_ANON_KEY.startsWith("YOUR_");
+const sb = USE_SUPABASE ? supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+const PHOTO_BUCKET = "land-photos";
+
+/* Every function below silently falls back to the in-memory demo behaviour when Supabase isn't configured yet,
+   so the site keeps working exactly as before until you plug in your real project. */
+
+async function dbLoadAll(){
+  if(!USE_SUPABASE) return; // keep the seeded demo data
+  const [{data: sellers}, {data: listings}, {data: inquiries}] = await Promise.all([
+    sb.from('sellers').select('*').order('id', {ascending:false}),
+    sb.from('listings').select('*').order('id', {ascending:false}),
+    sb.from('inquiries').select('*').order('id', {ascending:false})
+  ]);
+  state.sellers = (sellers||[]).map(s=>({id:s.id, name:s.name, phone:s.phone, idType:s.id_type, idNumber:s.id_number, email:s.email, dateRegistered:s.date_registered}));
+  state.listings = (listings||[]).map(l=>({id:l.id, title:l.title, district:l.district, area:l.area, type:l.type, size:l.size, unit:l.unit, price:l.price, desc:l.description, sellerId:l.seller_id, sellerName:l.seller_name, sellerPhone:l.seller_phone, status:l.status, date:l.date, photos:l.photos||[], salePrice:l.sale_price}));
+  state.inquiries = (inquiries||[]).map(i=>({id:i.id, listingId:i.listing_id, buyerName:i.buyer_name, buyerPhone:i.buyer_phone, message:i.message, date:i.date}));
+}
+
+async function dbInsertSeller(seller){
+  if(!USE_SUPABASE) return seller;
+  const {data, error} = await sb.from('sellers').insert({
+    name:seller.name, phone:seller.phone, id_type:seller.idType, id_number:seller.idNumber, email:seller.email
+  }).select().single();
+  if(error){ showToast('Seller not saved to server: '+error.message, true); return seller; }
+  return {...seller, id:data.id, dateRegistered:data.date_registered};
+}
+
+async function dbUploadPhotos(files){
+  if(!USE_SUPABASE) return []; // in demo mode, caller already has base64 previews to use directly
+  const urls = [];
+  for(const file of files){
+    const path = `${Date.now()}_${Math.random().toString(36).slice(2)}_${file.name}`;
+    const {error} = await sb.storage.from(PHOTO_BUCKET).upload(path, file);
+    if(error){ showToast('Photo upload failed: '+error.message, true); continue; }
+    const {data} = sb.storage.from(PHOTO_BUCKET).getPublicUrl(path);
+    urls.push(data.publicUrl);
+  }
+  return urls;
+}
+
+async function dbInsertListing(listing){
+  if(!USE_SUPABASE) return listing;
+  const {data, error} = await sb.from('listings').insert({
+    title:listing.title, district:listing.district, area:listing.area, type:listing.type,
+    size:listing.size, unit:listing.unit, price:listing.price, description:listing.desc,
+    seller_id:listing.sellerId, seller_name:listing.sellerName, seller_phone:listing.sellerPhone,
+    status:'pending', photos:listing.photos
+  }).select().single();
+  if(error){ showToast('Listing not saved to server: '+error.message, true); return listing; }
+  return {...listing, id:data.id, date:data.date};
+}
+
+async function dbInsertInquiry(inquiry){
+  if(!USE_SUPABASE) return inquiry;
+  const {data, error} = await sb.from('inquiries').insert({
+    listing_id:inquiry.listingId, buyer_name:inquiry.buyerName, buyer_phone:inquiry.buyerPhone, message:inquiry.message
+  }).select().single();
+  if(error){ showToast('Enquiry not saved to server: '+error.message, true); return inquiry; }
+  return {...inquiry, id:data.id, date:data.date};
+}
+
+async function dbUpdateListing(id, fields){
+  if(!USE_SUPABASE) return;
+  const dbFields = {};
+  if('status' in fields) dbFields.status = fields.status;
+  if('salePrice' in fields) dbFields.sale_price = fields.salePrice;
+  const {error} = await sb.from('listings').update(dbFields).eq('id', id);
+  if(error) showToast('Update not saved to server: '+error.message, true);
+}
 
 /* ---------------- LANGUAGE ---------------- */
 let LANG = 'en';
@@ -418,7 +503,7 @@ function waLink(message){
 }
 
 /* ---------------- DATA (in-memory demo store) ---------------- */
-const DISTRICTS = ["Dhemaji"];
+const DISTRICTS = ["Kamrup Metropolitan","Kamrup","Nagaon","Sonitpur","Jorhat","Dibrugarh","Golaghat","Barpeta","Nalbari","Cachar","Karimganj","Dhubri","Tinsukia","Morigaon","Sivasagar","Charaideo","Majuli","Dhemaji"];
 const LAND_TYPES = [
   {id:"agricultural", label:"Agricultural", tagClass:"tag-agri", icon:"🌾", bg:"#DDE6D5"},
   {id:"residential", label:"Residential Plot", tagClass:"tag-resi", icon:"🏡", bg:"#EFE1C6"},
@@ -464,12 +549,14 @@ let state = {
 };
 
 /* ---------------- HELPERS ---------------- */
-function showToast(msg){
+function showToast(msg, isError){
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
+  t.classList.toggle('error', !!isError);
+  if(isError) console.error('Bhumi Sathi error:', msg);
   clearTimeout(window._toastTimer);
-  window._toastTimer = setTimeout(()=>t.classList.remove('show'), 2600);
+  window._toastTimer = setTimeout(()=>t.classList.remove('show'), isError ? 7000 : 2600);
 }
 
 function riverDivider(){
@@ -717,7 +804,7 @@ function viewListingDetail(id){
 
 function attachDetailHandlers(id){ /* inline handlers used */ }
 
-function submitInquiry(listingId){
+async function submitInquiry(listingId){
   const name = document.getElementById('buyerName').value.trim();
   const phone = document.getElementById('buyerPhone').value.trim();
   const msg = document.getElementById('buyerMsg').value.trim();
@@ -725,11 +812,13 @@ function submitInquiry(listingId){
     showToast('Please add your name and phone number.');
     return;
   }
-  state.inquiries.push({
+  let inquiry = {
     id: state.nextInquiryId++,
     listingId, buyerName:name, buyerPhone:phone, message:msg,
     date: new Date().toISOString().slice(0,10)
-  });
+  };
+  inquiry = await dbInsertInquiry(inquiry);
+  state.inquiries.push(inquiry);
   document.getElementById('enquiryFormHolder').innerHTML = `
     <div style="background:var(--leaf-soft);color:var(--leaf);padding:16px;border-radius:4px;font-size:0.92rem;">
       <strong>Sent.</strong> The broker has your details and will reach out about this land shortly.
@@ -739,6 +828,7 @@ function submitInquiry(listingId){
 
 /* ---------------- VIEW: SELL (seller registration + submit listing) ---------------- */
 let pendingPhotos = [];
+let pendingPhotoFiles = [];
 
 function viewSell(){
   if(!state.currentSeller){
@@ -766,6 +856,7 @@ function viewSell(){
 
   const seller = state.currentSeller;
   pendingPhotos = [];
+  pendingPhotoFiles = [];
   return `
   <div class="wrap page-title-block">
     <h1>List Your Land</h1>
@@ -813,7 +904,7 @@ function viewSell(){
 
 function attachSellHandlers(){}
 
-function registerSeller(){
+async function registerSeller(){
   const name = document.getElementById('rName').value.trim();
   const phone = document.getElementById('rPhone').value.trim();
   const idType = document.getElementById('rIdType').value;
@@ -823,10 +914,11 @@ function registerSeller(){
     showToast('Please fill in name, phone and ID number.');
     return;
   }
-  const seller = {
+  let seller = {
     id: state.nextSellerId++, name, phone, idType, idNumber, email,
     dateRegistered: new Date().toISOString().slice(0,10)
   };
+  seller = await dbInsertSeller(seller);
   state.sellers.push(seller);
   state.currentSeller = seller;
   document.getElementById('app').innerHTML = viewSell();
@@ -841,6 +933,7 @@ function switchSeller(){
 function handlePhotoSelect(event){
   const files = Array.from(event.target.files || []);
   files.forEach(file=>{
+    pendingPhotoFiles.push(file);
     const reader = new FileReader();
     reader.onload = e=>{
       pendingPhotos.push(e.target.result);
@@ -859,10 +952,11 @@ function renderPhotoPreview(){
 }
 function removePendingPhoto(i){
   pendingPhotos.splice(i,1);
+  pendingPhotoFiles.splice(i,1);
   renderPhotoPreview();
 }
 
-function submitListing(){
+async function submitListing(){
   const seller = state.currentSeller;
   const title = document.getElementById('sTitle').value.trim();
   const district = document.getElementById('sDistrict').value;
@@ -885,15 +979,19 @@ function submitListing(){
     showToast(`Please confirm you agree to the ${fmtINR(VERIFICATION_FEE)} verification fee before submitting.`);
     return;
   }
-  const newListing = {
+  showToast('Submitting…');
+  const photos = USE_SUPABASE ? await dbUploadPhotos(pendingPhotoFiles) : pendingPhotos.slice();
+  let newListing = {
     id: state.nextListingId++,
     title, district, area, type, size, unit, price, desc,
     sellerId: seller.id, sellerName:seller.name, sellerPhone:seller.phone,
     status:'pending', date: new Date().toISOString().slice(0,10),
-    photos: pendingPhotos.slice()
+    photos
   };
+  newListing = await dbInsertListing(newListing);
   state.listings.unshift(newListing);
   pendingPhotos = [];
+  pendingPhotoFiles = [];
   document.getElementById('sellFormShell').innerHTML = `
     <div class="success-box">
       <span class="serif">Submitted for review</span>
@@ -1067,7 +1165,7 @@ function cancelCloseDeal(id){
   l._showCloseForm = false;
   refreshAdminTab();
 }
-function confirmCloseDeal(id){
+async function confirmCloseDeal(id){
   const l = state.listings.find(x=>x.id===id);
   const price = parseFloat(document.getElementById('closePrice_'+id).value) || l.price;
   l.status = 'closed';
@@ -1075,6 +1173,7 @@ function confirmCloseDeal(id){
   l._showCloseForm = false;
   refreshAdmin();
   showToast(`Deal closed. Buyer fee ${fmtINR(price*BUYER_FEE_PCT)}, seller fee ${fmtINR(price*SELLER_FEE_PCT)}.`);
+  await dbUpdateListing(id, {status:'closed', salePrice:price});
 }
 
 function renderInquiriesTab(){
@@ -1118,11 +1217,12 @@ function renderClosedTab(){
   </div>`;
 }
 
-function setListingStatus(id, status){
+async function setListingStatus(id, status){
   const l = state.listings.find(x=>x.id===id);
   l.status = status;
   refreshAdmin();
   showToast(status==='approved' ? 'Listing approved and now live.' : 'Listing rejected.');
+  await dbUpdateListing(id, {status});
 }
 
 function refreshAdminTab(){
@@ -1156,7 +1256,15 @@ function attachAdminHandlers(){
 document.getElementById('udyamBadgeNav').textContent = "Udyam Verified";
 document.getElementById('udyamBadgeFooter').textContent = UDYAM_NUMBER;
 applyStaticTranslations();
-navigate();
+
+async function boot(){
+  if(USE_SUPABASE){
+    document.getElementById('app').innerHTML = `<div class="wrap" style="padding:80px 0;text-align:center;color:var(--ink-soft);">Loading listings…</div>`;
+    await dbLoadAll();
+  }
+  navigate();
+}
+boot();
 </script>
 </body>
 </html>
